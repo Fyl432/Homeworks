@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+
+{% block title %}
+Новости
+{% endblock title %}
+
+{% block content %}
+<h1> УДАЛЕНИЕ НОВОСТИ </h1>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    <p>Удаляем "{{ object }}"?</p>
+    <input type="submit" value="Delete" />
+</form>
+{% endblock content %}

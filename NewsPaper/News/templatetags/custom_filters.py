@@ -2,7 +2,6 @@ from django import template
 
 register = template.Library()
 
-
 @register.filter()
 def no_mat(text):
     mat = ["хуй", "хуе", "хуё", "хуя", "хуи", "хую", "муд ", "муда", "мудо", "муди", "пизд", " еб", " ёб", "похер"
@@ -11,7 +10,8 @@ def no_mat(text):
             " суче", " сучье", "сучара", " сучий", "бля", " Бля"]
     t3='_'
     while t3:
-         for a in mat:
-          t1, t2, t3 = text.partition(a)
-          text = t1 + '*'*len(t2) + t3
+        for a in mat:
+            t1, t2, t3 = text.partition(a)
+            text = t1 + '*'*len(t2) + t3
+
     return text

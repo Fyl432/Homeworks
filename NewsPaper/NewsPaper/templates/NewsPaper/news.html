@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Новости
+{% endblock title %}
+
+{% block content %}
+   <h1>Все новости: {{news|length}}</h1>
+
+   <hr>
+   {% if news %}
+       <table>
+           <tr>
+               <td>Название</td>
+               <td>Опубликована</td>
+               <td>Текст</td>
+           </tr>
+           {% for new in news %}
+           <tr>
+               <td>{{ new.title }}</td>
+               <td>{{ new.created|date:'M d Y' }}</td>
+               <td>{{ new.contents|no_mat|truncatechars:20 }}</td>
+               <td>{{ new.rating }}</td>
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Новостей не опубликовано!</h2>!
+
+   {% endif %}
+
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}
