@@ -8,7 +8,6 @@ class Author(models.Model):
     rating = models.SmallIntegerField(default=0)
 
     def update_rating(self):
-
         ratingP = self.post_set.all().aggregate(postRating=Sum('rating'))
         pRat = 0
         pRat += ratingP.get('postRating')
@@ -26,13 +25,18 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    # pk = unique
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=128)
     contents = models.TextField()
     rating = models.SmallIntegerField(default=0)
-    postType = models.CharField(max_length=16, choices=[('news', "Новость"), ('article', "Статья")], default='article')
+    postType = models.CharField(max_length=16, choices=[('news', "Новость"), ('article', "Статья")],
+                                default='article')
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     postCategory = models.ManyToManyField(Category, through='PostCategory')
+
+    def __str__(self):
+        return f'{self.title} - {self.created.strftime("%d.%m.%Y")}'
 
     def like(self):
         self.rating += 1

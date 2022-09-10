@@ -1,0 +1,16 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Новости
+{% endblock title %}
+
+{% block content %}
+<h1>{{ new.title|no_mat }}</h1>
+<br>
+<h2>Опубликовано {{ new.created|date:'M d Y' }}</h2>
+<br>
+<hr>
+<h2>{{ new.contents|no_mat }}</h2>
+{% endblock content %}
