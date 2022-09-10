@@ -1,0 +1,65 @@
+u1=User.objects.create_user(username='Petya')
+u2=User.objects.create_user(username='Vasya')
+u3=User.objects.create_user(username='Mitya')
+u4=User.objects.create_user(username='Kolya')
+
+Author.objects.create(author=u1)
+Author.objects.create(author=u2)
+a1=Author.objects.get(id=1)
+a2=Author.objects.get(id=2)
+
+Category.objects.create(category='IT')
+Category.objects.create(category='Society')
+Category.objects.create(category='Art')
+Category.objects.create(category='Politics')
+
+Post.objects.create(author=a1, postType='news', title='Горячая новость', contents='Годзилла наконец-то победил Кинг-Конга!')
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=2))
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=3))
+Post.objects.create(author=a2, postType='acticles', title='В чем измерять длину питона', contents='Пять мартышек, три слоненка, тридцать восемь попугаев!')
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=1))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=3))
+Post.objects.create(author=a2, postType='acticles', title='Почему Украины никогда не существовало', contents='Украинцев придумал вождь революции Ленин, он же выделил им территорию')
+Post.objects.get(id=3).postCategory.add(Category.objects.get(id=2))
+Post.objects.get(id=3).postCategory.add(Category.objects.get(id=4))
+
+Comment.objects.create(CommentPost=Post.objects.get(id=1), Commentator=Author.objects.get(id=1).author, contents='Неправда!')
+Comment.objects.create(CommentPost=Post.objects.get(id=2), Commentator=Author.objects.get(id=2).author, contents='LOL')
+Comment.objects.create(CommentPost=Post.objects.get(id=3), Commentator=Author.objects.get(id=1).author, contents='Да начнется хохлосрач!')
+Comment.objects.create(CommentPost=Post.objects.get(id=3), Commentator=Author.objects.get(id=1).author, contents=':Trollface:')
+
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=1).dislike()
+Comment.objects.get(id=3).dislike()
+Comment.objects.get(id=3).dislike()
+Comment.objects.get(id=4).dislike()
+Comment.objects.get(id=4).dislike()
+Comment.objects.get(id=4).dislike()
+Comment.objects.get(id=1).rating
+Comment.objects.get(id=2).rating
+Comment.objects.get(id=3).rating
+Comment.objects.get(id=4).rating
+Post.objects.get(id=1).like()
+Post.objects.get(id=1).like()
+Post.objects.get(id=1).like()
+Post.objects.get(id=2).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=3).like()
+
+a1.update_rating()
+a2.update_rating()
+
+q = Author.objects.order_by('-rating')[:1]
+[(i.rating, i.author.username) for i in q]
+
+from datetime import *
+x = Post.objects.order_by('-rating').exclude(postType='news')[:1]
+[(i.created.strftime("%H:%M:%S %d.%m.%Y"), i.author.author, i.rating, i.title, i.preview()  ) for i in x]
+
+
+y=[(Comment.objects.filter(CommentPost=i.id)) for i in x]
+first, *rest = y
+[(i.created.strftime("%H:%M:%S %d.%m.%Y"), i.Commentator, i.rating, i.contents) for i in first]
